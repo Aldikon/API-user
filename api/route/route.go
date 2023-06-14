@@ -14,6 +14,6 @@ func Setup(app *bootstrap.Application, mux *http.ServeMux) {
 	userService := service.NewUser(userDB)
 	userHandlers := handlers.NewUser(userService)
 
-	mux.HandleFunc("/user", userHandlers.User)
-	mux.HandleFunc("/user/", userHandlers.GetByID)
+	mux.HandleFunc("/user", userHandlers.Users)
+	mux.HandleFunc("/user/", userHandlers.User)
 }
