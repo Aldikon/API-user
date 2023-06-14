@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -62,7 +63,9 @@ func migrateVersion(env *Env) {
 	}
 
 	if err := m.Up(); err != nil {
-		logrus.Fatalf("Migration up: %v\n", err)
+		if !errors.Is(err, migrate.ErrNoChange) {
+			logrus.Fatalf("Migration up: %v\n", err)
+		}
 	}
 	// if err := m.Force(env.DBMigVersion); err != nil {
 	// 	logrus.Fatalf("Migration up: %v\n", err)
