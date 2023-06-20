@@ -17,7 +17,7 @@ func NewUser(db model.UserRepo) *user {
 	}
 }
 
-func (u *user) Creat(ctx context.Context, user model.User) error {
+func (u *user) Creat(ctx context.Context, user model.CreateUser) error {
 	err := user.Validation()
 	if err != nil {
 		return err
@@ -47,13 +47,13 @@ func (u *user) GetByID(ctx context.Context, id uint) (model.User, error) {
 	return user, nil
 }
 
-func (u *user) GetByFilter(ctx context.Context, f model.FilterUser) ([]model.User, error) {
+func (u *user) ListWithFilter(ctx context.Context, f model.FilterUser) ([]model.User, error) {
 	err := f.Validate()
 	if err != nil {
 		return nil, err
 	}
 
-	users, err := u.db.GetByFilter(ctx, f)
+	users, err := u.db.ListWithFilter(ctx, f)
 	if err != nil {
 		return nil, fmt.Errorf("repo GetByFilter err: %w", err)
 	}
@@ -61,7 +61,7 @@ func (u *user) GetByFilter(ctx context.Context, f model.FilterUser) ([]model.Use
 	return users, nil
 }
 
-func (u *user) Update(ctx context.Context, user model.User) error {
+func (u *user) Update(ctx context.Context, user model.UserUpdate) error {
 	err := user.Validation()
 	if err != nil {
 		return err
