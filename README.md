@@ -31,8 +31,8 @@ Example JSON object user:
     "surname" : string,
     "gender" : enum gender,
     "status" : enum gender,
-    "birth_date" : format "год-месяц-день" пример "2022-05-17",
-    "creat_date" : format "год-месяц-день" пример "2022-05-17"
+    "birth_date" : format "2006-01-02",
+    "creat_date" : format "2006-01-02"
 }
 ```
 ---
