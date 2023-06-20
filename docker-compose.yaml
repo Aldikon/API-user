@@ -2,7 +2,7 @@ version: '3'
 services:
   db:
     image: postgres
-    restart: always
+    restart: on-failure
     environment:
       POSTGRES_PASSWORD: 123
       POSTGRES_USER: root
@@ -17,22 +17,9 @@ services:
       - "8080:8080"
     depends_on:
       - db
+    restart: always
     networks:
       - mynetwork
-  
-  # pg_admin:
-  #   image: dpage/pgadmin4
-  #   restart: always
-  #   depends_on:
-  #     - db
-  #   ports:
-  #     - "80:80"
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: aldik@mail.com
-  #     PGADMIN_DEFAULT_PASSWORD: 123
-  #   networks:
-  #     - mynetwork
-  
 
 networks:
   mynetwork:
