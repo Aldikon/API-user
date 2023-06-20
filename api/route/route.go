@@ -16,4 +16,6 @@ func Setup(app *bootstrap.Application, mux *http.ServeMux) {
 
 	mux.HandleFunc("/user", userHandlers.Users)
 	mux.HandleFunc("/user/", userHandlers.User)
+
+	mux.HandleFunc("/", handlers.Index)
 }
