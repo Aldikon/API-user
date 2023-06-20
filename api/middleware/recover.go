@@ -2,9 +2,6 @@ package middleware
 
 import (
 	"net/http"
-	"time"
-
-	"github.com/sirupsen/logrus"
 )
 
 func Use(next http.Handler) http.Handler {
@@ -23,7 +20,7 @@ func recoverHandler(next http.Handler) http.Handler {
 
 func logger(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		logrus.Trace(r.URL.Path, r.Method, time.Now().Format(time.DateTime))
+		// logrus.Tracef("path: %s\nmethod: %s\n time: %s\n", r.URL.Path, r.Method, time.Now().Format(time.DateTime))
 		next.ServeHTTP(w, r)
 	})
 }
