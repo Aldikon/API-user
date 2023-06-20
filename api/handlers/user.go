@@ -15,20 +15,28 @@ const (
 	UserIDKey key = iota
 )
 
-type user struct {
+func getUserID(ctx context.Context) uint {
+	id, ok := ctx.Value(UserIDKey).(uint)
+	if !ok {
+		return 0
+	}
+	return id
+}
+
+type userHandler struct {
 	service model.UserService
 }
 
-func NewUser(us model.UserService) *user {
-	return &user{
+func NewUser(us model.UserService) *userHandler {
+	return &userHandler{
 		service: us,
 	}
 }
 
-func (u *user) Users(w http.ResponseWriter, r *http.Request) {
+func (u *userHandler) Users(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	if r.URL.Path != "/user" {
-		http.NotFound(w, r)
+		writeError(w, http.StatusNotFound)
 		return
 	}
 
@@ -38,22 +46,18 @@ func (u *user) Users(w http.ResponseWriter, r *http.Request) {
 	case http.MethodPost:
 		u.post(w, r)
 	default:
-		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
+		writeError(w, http.StatusMethodNotAllowed)
 	}
 }
 
-func (u *user) User(w http.ResponseWriter, r *http.Request) {
+func (u *userHandler) User(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-
-	// TODO изменить порядок проверки, на метод важнее
 	id, err := strconv.Atoi(path.Base(r.URL.Path))
 	if err != nil {
-		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+		writeError(w, http.StatusNotFound)
 		return
 	}
-
 	ctx := context.WithValue(r.Context(), UserIDKey, uint(id))
-
 	switch r.Method {
 	case http.MethodGet:
 		u.getByID(w, r.WithContext(ctx))
@@ -62,6 +66,6 @@ func (u *user) User(w http.ResponseWriter, r *http.Request) {
 	case http.MethodPut:
 		u.update(w, r.WithContext(ctx))
 	default:
-		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
+		writeError(w, http.StatusMethodNotAllowed)
 	}
 }
