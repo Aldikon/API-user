@@ -2,6 +2,7 @@ package model
 
 import (
 	"context"
+	"fmt"
 	"strings"
 )
 
@@ -42,13 +43,17 @@ var (
 )
 
 type User struct {
-	ID        uint     `json:"id"`
-	Name      string   `json:"name"`
-	Surname   string   `json:"surname"`
-	Gender    string   `json:"gender"`
-	Status    string   `json:"status"`
-	BirthDate TimeDate `json:"birth_date"`
-	CreatDate TimeDate `json:"creat_date"`
+	ID        uint     `json:"id" redis:"id"`
+	Name      string   `json:"name" redis:"name"`
+	Surname   string   `json:"surname" redis:"surname"`
+	Gender    string   `json:"gender" redis:"gender"`
+	Status    string   `json:"status" redis:"status"`
+	BirthDate TimeDate `json:"birth_date" redis:"birth_date"`
+	CreatDate TimeDate `json:"creat_date" redis:"creat_date"`
+}
+
+func SchemaUser(id uint) string {
+	return fmt.Sprintf("user:%d", id)
 }
 
 func validatioAttributes(att []string) bool {
