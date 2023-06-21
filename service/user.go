@@ -41,6 +41,13 @@ func (u *user) GetByID(ctx context.Context, id uint) (model.User, error) {
 		return user, model.NewValidationError("not correctly id")
 	}
 
+	// user, err = u.rdb.GetUserByID(ctx, id)
+	// if err == nil {
+	// 	return user, nil
+	// } else if !errors.Is(err, redis.ErrNotFound) {
+	// 	return user, err
+	// }
+
 	user, err = u.db.GetByID(ctx, id)
 	if err != nil {
 		return user, fmt.Errorf("repo GetById err: %w", err)
@@ -54,6 +61,11 @@ func (u *user) ListWithFilter(ctx context.Context, f model.FilterUser) ([]model.
 	if err != nil {
 		return nil, err
 	}
+
+	// ids, err := u.rdb.GetListFilter(ctx, f)
+	// if err != nil && !errors.Is(err, redis.ErrNotFound) {
+	// 	return nil, err
+	// }
 
 	users, err := u.db.ListWithFilter(ctx, f)
 	if err != nil {
