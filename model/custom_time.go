@@ -48,3 +48,16 @@ func (ct *TimeDate) Scan(value interface{}) error {
 func (ct TimeDate) Value() (driver.Value, error) {
 	return ct.Time.Format("2006-01-02"), nil
 }
+
+func (ct TimeDate) String() string {
+	return ct.Time.Format("2006-01-02")
+}
+
+func (ct *TimeDate) ScanRedis(s string) error {
+	t, err := time.Parse("2006-01-02", s)
+	if err != nil {
+		return err
+	}
+	ct.Time = t
+	return nil
+}
