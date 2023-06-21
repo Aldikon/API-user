@@ -2,15 +2,16 @@ package bootstrap
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/redis/go-redis/v9"
 	"github.com/sirupsen/logrus"
 )
 
-func NewRedis(enc *Env) *redis.Client {
+func NewRedis(env *Env) *redis.Client {
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     fmt.Sprintf("%s:%s", env.RDBHost, env.RDBPort),
 		Password: "",
 		DB:       0,
 	})
