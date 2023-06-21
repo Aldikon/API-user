@@ -8,12 +8,14 @@ import (
 )
 
 type user struct {
-	db model.UserRepo
+	db  model.UserRepo
+	rdb model.CacheDB
 }
 
-func NewUser(db model.UserRepo) *user {
+func NewUser(db model.UserRepo, rdb model.CacheDB) *user {
 	return &user{
-		db: db,
+		db:  db,
+		rdb: rdb,
 	}
 }
 

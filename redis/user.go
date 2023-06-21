@@ -1,4 +1,4 @@
-package redisDB
+package redis
 
 import (
 	"context"
@@ -30,6 +30,9 @@ func (c *cache) GetUserByID(ctx context.Context, id uint) (model.User, error) {
 	ms := c.rdb.HGetAll(ctx, model.SchemaUser(id))
 	err := ms.Scan(&user)
 	if err != nil {
+		if errors.Is(err, redis.Nil) {
+			return user, ErrNotFound
+		}
 		return user, err
 	}
 
@@ -86,6 +89,9 @@ func (c *cache) GetListFilter(ctx context.Context, f model.FilterUser) ([]uint, 
 	for i := 0; i < int(l); i++ {
 		s, err := c.rdb.LPop(ctx, key).Result()
 		if err != nil {
+			if errors.Is(err, redis.Nil) {
+				return nil, ErrNotFound
+			}
 			return nil, err
 		}
 
