@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"net/url"
 	"strconv"
 )
@@ -50,4 +51,16 @@ func (f FilterUser) Validate() error {
 	}
 
 	return nil
+}
+
+func (f FilterUser) Schema() string {
+	return fmt.Sprintf("full_name:%s:gender:%s:status:%s:desc:%s:asc:%s:limit:%d:offset:%d",
+		f.FullName,
+		f.Gender,
+		f.Status,
+		f.Desc,
+		f.Asc,
+		f.Limit,
+		f.Offset,
+	)
 }
