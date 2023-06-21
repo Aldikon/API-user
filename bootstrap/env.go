@@ -15,6 +15,9 @@ type Env struct {
 	DBName       string `mapstructure:"POSTGRES_NAME"`
 	DBMigPath    string `mapstructure:"POSTGRES_MIGRATION_PATH"`
 	DBMigVersion int    `mapstructure:"POSTGRES_MIGRATION_VERSION"`
+
+	RDBHost string `mapstructure:"REDIS_HOST"`
+	RDBPort string `mapstructure:"REDIS_PORT"`
 }
 
 func NewEnv() *Env {
